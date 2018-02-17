@@ -71,7 +71,7 @@
                                     <outlet property="p2_name" destination="l1K-Rb-cp5" id="68M-SK-rqi"/>
                                     <outlet property="p2_score" destination="xEb-lv-uNP" id="6UO-wo-BH3"/>
                                     <outlet property="p2_winner" destination="7Jq-Dg-v1D" id="W7v-ck-SRD"/>
-                                    <segue destination="Xqu-S4-AqB" kind="show" id="d0U-ne-Irf"/>
+                                    <segue destination="BYZ-38-t0r" kind="show" identifier="ShowDetail" id="Vf1-nL-EZ0"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -119,7 +119,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" keyboardType="numbersAndPunctuation" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Points" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="23S-lN-rCH" userLabel="p2_score">
                                 <rect key="frame" x="262" y="126" width="97" height="30"/>
@@ -168,7 +168,11 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" title="New Game" id="aXs-YH-4Uc">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="0l2-Nb-Khv"/>
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="0l2-Nb-Khv">
+                            <connections>
+                                <action selector="cancel:" destination="BYZ-38-t0r" id="mL6-CD-fR8"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="save" id="xCe-bF-tkE">
                             <connections>
                                 <segue destination="MsA-9j-6Wa" kind="unwind" unwindAction="unwindToGameListWithSender:" id="fpi-yd-LLW"/>
@@ -176,7 +180,6 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="cancelButton" destination="0l2-Nb-Khv" id="cA0-u8-Mqv"/>
                         <outlet property="p1_name" destination="t15-gg-4mB" id="ZKz-sV-ym7"/>
                         <outlet property="p1_score" destination="vjy-oG-vw2" id="6fL-kZ-Q1U"/>
                         <outlet property="p1_winner" destination="2kS-X0-J2n" id="4EY-Np-Otc"/>
@@ -225,10 +228,10 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C9c-g5-hmU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="200" y="60.26986506746627"/>
+            <point key="canvasLocation" x="158" y="460"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="q6l-rD-Hau"/>
+        <segue reference="Vf1-nL-EZ0"/>
     </inferredMetricsTieBreakers>
 </document>

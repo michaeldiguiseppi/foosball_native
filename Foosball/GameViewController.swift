@@ -22,7 +22,7 @@ class GameViewController: UIViewController {
     @IBOutlet weak var p1_winner: UISwitch!
     @IBOutlet weak var p2_winner: UISwitch!
     @IBOutlet weak var saveButton: UIBarButtonItem!
-    @IBOutlet weak var cancelButton: UIBarButtonItem!
+
     
     /*
      This value is either passed by `GameTableViewController` in `prepare(for:sender:)`
@@ -35,6 +35,21 @@ class GameViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         p1_winner.setOn(false, animated: false)
         p2_winner.setOn(false, animated: false)
+        
+        
+        // Set up views if editing an existing Game.
+        if let game = game {
+            p1_name.text = game.p1_name
+            p1_score.text = String(game.p1_score)
+            p1_winner.setOn(game.p1_winner, animated: false)
+            p2_name.text = game.p2_name
+            p2_score.text = String(game.p2_score)
+            p2_winner.setOn(game.p2_winner, animated: false)
+            
+        }
+        
+        
+        
         // Enable the save button only if the text field has valid names/scores
         updateSaveButtonState()
     }
@@ -46,6 +61,19 @@ class GameViewController: UIViewController {
     }
     
     //MARK: Navigation
+    
+    @IBAction func cancel(_ sender: UIBarButtonItem) {
+        // Depending on style of presentation (modal or push presentation), this view controller needs to be dismissed in two different ways.
+        let isPresentingInAddGameMode = presentingViewController is UINavigationController
+        if isPresentingInAddGameMode {
+            dismiss(animated: true, completion: nil)
+        } else if let owningNavigationController = navigationController {
+            owningNavigationController.popViewController(animated: true)
+        } else {
+            fatalError("The GameViewController is not inside a navigation controller.")
+        }
+    }
+    
     // this method lets you configure a view controller before it is presented
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)

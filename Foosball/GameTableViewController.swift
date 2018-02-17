@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import os.log
 
 class GameTableViewController: UITableViewController {
     
@@ -18,6 +19,8 @@ class GameTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        navigationItem.leftBarButtonItem = editButtonItem
+        
        // Load sample games
         loadSampleGames()
     }
@@ -60,25 +63,25 @@ class GameTableViewController: UITableViewController {
         return cell
     }
 
-    /*
+    
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
         return true
     }
-    */
-
-    /*
+ 
+    
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
+            games.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
     }
-    */
+    
 
     /*
     // Override to support rearranging the table view.
@@ -95,26 +98,63 @@ class GameTableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        
+        super.prepare(for: segue, sender: sender)
+        
+        switch(segue.identifier ?? "") {
+        case "AddItem":
+            os_log("Adding a new game", log: OSLog.default, type: .debug)
+            
+        case "ShowDetail":
+            guard let gameDetailViewController = segue.destination as? GameViewController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+            
+            guard let selectedGameCell = sender as? GameTableViewCell else {
+                fatalError("Unexpected sender: \(sender ?? "")")
+            }
+            
+            guard let indexPath = tableView.indexPath(for: selectedGameCell) else {
+                fatalError("The selected cell is not being displayed by the table")
+            }
+            
+            let selectedGame = games[indexPath.row]
+            gameDetailViewController.game = selectedGame
+            
+            
+        default:
+            fatalError("Unexpected Segue Identifier; \(segue.identifier ?? "")")
+            
+        }
+        
     }
-    */
+    
     
     
     // MARK: Actions
     @IBAction func unwindToGameList(sender: UIStoryboardSegue) {
         if let sourceViewController = sender.source as? GameViewController, let game = sourceViewController.game {
-            // add a new game.
-            let newIndexPath = IndexPath(row: games.count, section: 0)
             
-            games.append(game)
-            
-            tableView.insertRows(at: [newIndexPath], with: .automatic)
+            if let selectedIndexPath = tableView.indexPathForSelectedRow {
+                // Update an existing game.
+                games[selectedIndexPath.row] = game
+                
+                tableView.reloadRows(at: [selectedIndexPath], with: .none)
+            } else {
+                // add a new game.
+                let newIndexPath = IndexPath(row: games.count, section: 0)
+                
+                games.append(game)
+                
+                tableView.insertRows(at: [newIndexPath], with: .automatic)
+            }
         }
     }
     
